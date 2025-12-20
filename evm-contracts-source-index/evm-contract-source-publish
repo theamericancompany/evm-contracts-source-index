@@ -131,6 +131,11 @@ _contract_sign() {
     _key_fingerprint="${4}" \
     _gpg_opts=() \
     _msg=()
+  if [[ "${quiet}" == "n" ]]; then
+    _gpg_opts+=(
+      -v
+    )
+  fi
   _msg=(
     "Signing source contract"
     "archive '${_dir}/${_contract_name}.tar.xz'."
@@ -143,7 +148,9 @@ _contract_sign() {
     --local-user
       "${_key_fingerprint}"
     --pinentry-mode
-      "loopback"
+      "ask"
+    # --pinentry-mode
+    #   "tty"
     --sign
     --output
       "${_dir}/${_contract_name}.tar.xz.gpg"
